@@ -15,8 +15,8 @@ function [x,er,k] = jacobi(a, b, tol, kmax)
         endif
       endfor
       aux(i) = (b(i) - soma)/a(i,i);
-      er(i) =  (norm(x(i),inf) - norm(aux(i),inf))/norm(x(i), inf);
-      if(abs(er(i)) < tol)
+      er(k+1) =  (norm(x(i),inf) - norm(aux(i),inf))/norm(x(i), inf);
+      if(abs(er(k+1)) < tol)
         return;
       endif
       x(i) = aux(i);
