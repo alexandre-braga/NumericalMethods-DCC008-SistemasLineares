@@ -2,6 +2,8 @@
 1;
 function [x,er,k] = jacobi(a, b, tol, kmax)
   n = rows(a);
+  x = zeros(n,1);
+  aux = zeros(n,1);
   for i = 1:n
     x(i) = b(i)/a(i, i)
   endfor
@@ -15,9 +17,10 @@ function [x,er,k] = jacobi(a, b, tol, kmax)
           soma = soma + a(i,j) * x(j);
         endif
       endfor
-      aux(i) = (b(i) - soma)/a(i,i);
-      er(k+1) =  (norm(x(i),inf) - norm(aux(i),inf))/norm(x(i), inf);
-      x(i) = aux(i);
+      aux(i) = x(i);
+      x(i) = (b(i) - soma)/a(i,i);
+      er(k) =  abs(max(x - aux)/max(x));
+      (norm(x(i),inf) - norm(aux(i),inf))/norm(x(i), inf);
       if(abs(er(k+1)) < tol)
         return;
       endif
@@ -28,16 +31,18 @@ endfunction
 
 function [x,er,k] = sor(a, b, tol, kmax, w)
   n = rows(a);
+  x = zeros(n,1);
+  xAnt = zeros(n,1);
   for i = 1:n
-    xAnt(i) = b(i)/a(i, i);
+    x(i) = b(i)/a(i, i);
   endfor
-  x = xAnt;
   k = 0;
   inf = tril(a, -1);
   sup = triu(a, 1);
   
   while (k < kmax)
     k = k + 1;
+    xAnt = x;
     for i = 1:n
       somainf = 0;
       somasup = 0;
@@ -48,13 +53,11 @@ function [x,er,k] = sor(a, b, tol, kmax, w)
         somasup = somasup + sup(i,j) * xAnt(j);
       endfor
       x(i) = (1-w)*(xAnt(i)) + (b(i) - somainf - somasup)* w/a(i,i);
-      #er(k+1) =  (norm(x,inf) - norm(xAnt,inf))/norm(x, inf);
-      #if(abs(er(k+1)) < tol)
-      #  return;
-      #endif
+      er(k) =  abs(max(x - xAnt)/max(x));
+      if(abs(er(k+1)) < tol)
+        return;
+      endif
     endfor
-    xAnt = x;
-    er = 0;
   endwhile
   return;
 endfunction
