@@ -29,7 +29,7 @@ endfunction
 function [x,er,k] = sor(a, b, tol, kmax, w)
   n = rows(a);
   for i = 1:n
-    xAnt(i) = b(i)/a(i, i)
+    xAnt(i) = b(i)/a(i, i);
   endfor
   x = xAnt;
   k = 0;
@@ -47,9 +47,8 @@ function [x,er,k] = sor(a, b, tol, kmax, w)
       for j = i:n
         somasup = somasup + sup(i,j) * xAnt(j);
       endfor
-      aux(i) = (1-w)*(xAnt(i)) + (b(i) - somainf - somasup)* w/a(i,i);
-      #er(k+1) =  (norm(x(i),inf) - norm(aux(i),inf))/norm(x(i), inf);
-      x(i) = aux(i);
+      x(i) = (1-w)*(xAnt(i)) + (b(i) - somainf - somasup)* w/a(i,i);
+      #er(k+1) =  (norm(x,inf) - norm(xAnt,inf))/norm(x, inf);
       #if(abs(er(k+1)) < tol)
       #  return;
       #endif
@@ -73,7 +72,7 @@ function dom = diagonal_dominante(a)
         somaLinha = somaLinha + a(i, j);
       endif
     endfor
-    if(somaLinha > a(i, i))
+    if(somaLinha >= a(i, i))
       dom = false(1);
       return;
     endif
