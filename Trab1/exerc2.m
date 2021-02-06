@@ -1,6 +1,6 @@
 #!/home/kuroneko/snap/octave -qf
 1;
-function [x,er,k] = jacobi(a, b, tol, kmax)
+function [x,er,erAb,k] = jacobi(a, b, tol, kmax)
   n = rows(a);
   x = zeros(n,1);
   aux = zeros(n,1);
@@ -17,9 +17,9 @@ function [x,er,k] = jacobi(a, b, tol, kmax)
       endfor
       aux(i) = x(i);
       x(i) = (b(i) - soma)/a(i,i);
-      er(k+1) =  x(i) - ones(1,1);
-      tolAtual  = (norm(x, inf) - norm(aux, inf))/norm(x, inf);
-      if(abs(tolAtual) < tol)
+      erAb(i) =  x(i) - ones(1,1);
+      er(i)  = (norm(x, inf) - norm(aux, inf))/norm(x, inf);
+      if(abs(er(i)) < tol)
         return;
       endif
     endfor
@@ -27,7 +27,7 @@ function [x,er,k] = jacobi(a, b, tol, kmax)
   return;
 endfunction
 
-function [x,er,k] = sor(a, b, tol, kmax, w)
+function [x,er,erAb,k] = sor(a, b, tol, kmax, w)
   n = rows(a);
   x = zeros(n,1);
   xAnt = zeros(n,1);
@@ -49,9 +49,9 @@ function [x,er,k] = sor(a, b, tol, kmax, w)
         somasup = somasup + sup(i,j) * xAnt(j);
       endfor
       x(i) = (1-w) * xAnt(i) + w * (b(i) - somainf - somasup)/a(i,i);
-      er(k+1) =  x(i) - ones(1,1);
-      tolAtual = abs(max(x, xAnt)/max(x));
-      if(abs(tolAtual) < tol)
+      erAb(i) =  x(i) - ones(1,1);
+      er(i) = abs(x(i) - xAnt(i)/x(i));
+      if(abs(er(i)) < tol)
         return;
       endif
     endfor
@@ -91,17 +91,17 @@ function [BJ, BGS, BSOR] = fatora(a, w)
   printf("Raio espectral: %d\n", raioEspec);
   
   
-  [xJacobi,erJacobi,kJacobi] = jacobi(a, b, tol, kmax);
-  save metodoJacobi.text xJacobi erJacobi kJacobi tol kmax raioEspec;
+  [xJacobi,erJacobi,erAbJacobi,kJacobi] = jacobi(a, b, tol, kmax);
+  save metodoJacobi.text erJacobi erAbJacobi kJacobi tol kmax raioEspec xJacobi;
   BJ = xJacobi;
   
-  [xSeidel,erSeidel,kSeidel] = sor(a, b, tol, kmax, 1);
-  save metodoSeidel.text xSeidel erSeidel kSeidel tol kmax raioEspec;
+  [xSeidel,erSeidel,erAbSeidel,kSeidel] = sor(a, b, tol, kmax, 1);
+  save metodoSeidel.text erSeidel erAbSeidel kSeidel tol kmax raioEspec xSeidel;
   BGS = xSeidel;
   
   if(raioEspec < 1)
-    [xSOR,erSOR,kSOR] = sor(a, b, tol, kmax, w);
-    save metodoSOR.text xSOR erSOR kSOR tol kmax w raioEspec;
+    [xSOR,erSOR,erAbSOR,kSOR] = sor(a, b, tol, kmax, w);
+    save metodoSOR.text erSOR erAbSOR kSOR tol kmax w raioEspec xSOR;
     BSOR = xSOR;
   else
     BSOR = 0;
