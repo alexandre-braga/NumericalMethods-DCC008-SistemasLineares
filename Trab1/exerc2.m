@@ -47,7 +47,7 @@ function [x,er,k] = sor(a, b, tol, kmax, w)
       for j = i:n
         somasup = somasup + sup(i,j) * xAnt(j);
       endfor
-      x(i) = (1-w)*(xAnt(i)) + (b(i) - somainf - somasup)* w/a(i,i);
+      x(i) = (1-w) * xAnt(i) + w * (b(i) - somainf - somasup)/a(i,i);
       er(k+1) =  abs(max(x - xAnt)/max(x));
       if(abs(er(k+1)) < tol)
         return;
@@ -77,7 +77,7 @@ function dom = diagonal_dominante(a)
   
 endfunction
 
-function [BJ, BGS, BSOR] = fatora(a,w)
+function [BJ, BGS, BSOR] = fatora(a, w)
   
   n = rows(a);
   b = a * ones(n,1);
@@ -101,8 +101,8 @@ endfunction
 function analise(matriz)
   
   #a
-  load("-mat",matriz);
-  a = Problem.A
+  load("-mat", matriz);
+  a = Problem.A;
   n = rows(a);
   
   #b
@@ -121,11 +121,11 @@ function analise(matriz)
   [jacobiMat,seidelMat,sorMat] = fatora(a, w);
   save metodosIterativos.text jacobiMat seidelMat sorMat; 
   
- endfunction
+endfunction
 
 addpath(pwd);
 args = argv();
 printf("matriz = %s\n", args{1});
 analise(args{1});
-printf("Fim programa");
+printf("Fim programa\n");
 
