@@ -4,13 +4,13 @@ function [x,er,k] = jacobi(a, b, tol, kmax)
   n = rows(a);
   x = zeros(n,1);
   aux = zeros(n,1);
-  for i = 1:n
-    x(i) = b(i)/a(i, i)
+  for i = 1:n,
+    x(i) = b(i)/a(i, i);
   endfor
-  for k = 1:kmax
-    for i = 1:n
+  for k = 1:kmax,
+    for i = 1:n,
       soma = 0;
-      for j = 1:n
+      for j = 1:n,
         if (i != j)
           soma = soma + a(i,j) * x(j);
         endif
@@ -30,21 +30,21 @@ function [x,er,k] = sor(a, b, tol, kmax, w)
   n = rows(a);
   x = zeros(n,1);
   xAnt = zeros(n,1);
-  for i = 1:n
+  for i = 1:n,
     x(i) = b(i)/a(i, i);
   endfor
   inf = tril(a, -1);
   sup = triu(a, 1);
   
-  for k = 1:kmax
+  for k = 1:kmax,
     xAnt = x;
     for i = 1:n
       somainf = 0;
       somasup = 0;
-      for j = 1:i
+      for j = 1:i,
         somainf = somainf + inf(i,j) * x(j);
       endfor
-      for j = i:n
+      for j = i:n,
         somasup = somasup + sup(i,j) * xAnt(j);
       endfor
       x(i) = (1-w) * xAnt(i) + w * (b(i) - somainf - somasup)/a(i,i);
@@ -84,18 +84,27 @@ function [BJ, BGS, BSOR] = fatora(a, w)
   tol = input('Insira a tolerância: ');
   kmax = input('Insira o n máximo de iterações: ');
   
+  #d
+  [V lambda] = eig(a);
+  raioEspec = max(abs(diag(lambda)));
+  printf("Raio espectral: %d\n", raioEspec);
+  
+  
   [xJacobi,erJacobi,kJacobi] = jacobi(a, b, tol, kmax);
-  save metodoJacobi.text xJacobi erJacobi kJacobi tol kmax b a;
+  save metodoJacobi.text xJacobi erJacobi kJacobi tol kmax raioEspec;
   BJ = xJacobi;
   
   [xSeidel,erSeidel,kSeidel] = sor(a, b, tol, kmax, 1);
-  save metodoSeidel.text xSeidel erSeidel kSeidel tol kmax b a;
+  save metodoSeidel.text xSeidel erSeidel kSeidel tol kmax raioEspec;
   BGS = xSeidel;
   
-  [xSOR,erSOR,kSOR] = sor(a, b, tol, kmax, w);
-  save metodoSOR.text xSOR erSOR kSOR tol kmax w b a;
-  BSOR = xSOR;
-  
+  if(raioEspec < 1)
+    [xSOR,erSOR,kSOR] = sor(a, b, tol, kmax, w);
+    save metodoSOR.text xSOR erSOR kSOR tol kmax w raioEspec;
+    BSOR = xSOR;
+  else
+    BSOR = 0;
+  endif
 endfunction
 
 function analise(matriz)
@@ -111,10 +120,6 @@ function analise(matriz)
   #c
   dom = diagonal_dominante(a);
   printf("É diagonal dominante ? %d\n", dom);
-  
-  #d
-  [V lambda] = eig(a);
-  raioEspec = max(abs(diag(lambda)));
   
   #e
   w = input('Insira o parâmetro de relaxação W: ');
