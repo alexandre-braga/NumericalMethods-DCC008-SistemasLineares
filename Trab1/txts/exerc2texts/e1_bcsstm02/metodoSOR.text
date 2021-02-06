@@ -1,0 +1,105 @@
+# Created by Octave 5.2.0, Sat Feb 06 17:46:24 2021 -03 <kuroneko@kuroneko-VirtualBox>
+# name: xSOR
+# type: matrix
+# rows: 66
+# columns: 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 0.99999999999999978
+ 0.99999999999999978
+ 0.99999999999999978
+ 0.99999999999999978
+ 0.99999999999999978
+ 0.99999999999999978
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+ 1
+
+
+# name: erSOR
+# type: matrix
+# rows: 1
+# columns: 21
+ 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+
+# name: kSOR
+# type: scalar
+20
+
+
+# name: tol
+# type: scalar
+9.9999999999999998e-20
+
+
+# name: kmax
+# type: scalar
+20
+
+
+# name: w
+# type: scalar
+0.69999999999999996
+
+
+# name: raioEspec
+# type: scalar
+0.17282857345500033
+
+

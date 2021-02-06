@@ -17,8 +17,9 @@ function [x,er,k] = jacobi(a, b, tol, kmax)
       endfor
       aux(i) = x(i);
       x(i) = (b(i) - soma)/a(i,i);
-      er(k+1) =  abs(max(x - aux)/max(x));
-      if(abs(er(k+1)) < tol)
+      er(k+1) =  x(i) - ones(1,1);
+      tolAtual  = (norm(x, inf) - norm(aux, inf))/norm(x, inf);
+      if(abs(tolAtual) < tol)
         return;
       endif
     endfor
@@ -48,8 +49,9 @@ function [x,er,k] = sor(a, b, tol, kmax, w)
         somasup = somasup + sup(i,j) * xAnt(j);
       endfor
       x(i) = (1-w) * xAnt(i) + w * (b(i) - somainf - somasup)/a(i,i);
-      er(k+1) =  abs(max(x - xAnt)/max(x));
-      if(abs(er(k+1)) < tol)
+      er(k+1) =  x(i) - ones(1,1);
+      tolAtual = abs(max(x, xAnt)/max(x));
+      if(abs(tolAtual) < tol)
         return;
       endif
     endfor
@@ -85,11 +87,10 @@ function [BJ, BGS, BSOR] = fatora(a, w)
   kmax = input('Insira o n máximo de iterações: ');
   
   #d
-  #[V lambda] = eig(a);
-  #raioEspec = max(abs(diag(lambda)));
   raioEspec = abs(eigs(a, 1, 'lm'));
   printf("Raio espectral: %d\n", raioEspec);
-
+  
+  
   [xJacobi,erJacobi,kJacobi] = jacobi(a, b, tol, kmax);
   save metodoJacobi.text xJacobi erJacobi kJacobi tol kmax raioEspec;
   BJ = xJacobi;
