@@ -44,10 +44,10 @@ function analise(matriz)
   printf("r = %f\n", r);
   
   #j
-  K = cond(a);
-  K2 = norm(a, inf) * norm(inv(a), inf);
+  #K = cond(a);
+  #K2 = norm(a, inf) * norm(inv(a), inf);
   
-  save ultimaMatriz.text a b x distX distA distB r K K2;
+  save ultimaMatriz.text x distX distA distB r b a;
 
  endfunction
 

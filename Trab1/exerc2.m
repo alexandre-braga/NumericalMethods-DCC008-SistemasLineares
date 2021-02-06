@@ -20,7 +20,6 @@ function [x,er,k] = jacobi(a, b, tol, kmax)
       aux(i) = x(i);
       x(i) = (b(i) - soma)/a(i,i);
       er(k+1) =  abs(max(x - aux)/max(x));
-      (norm(x(i),inf) - norm(aux(i),inf))/norm(x(i), inf);
       if(abs(er(k+1)) < tol)
         return;
       endif
