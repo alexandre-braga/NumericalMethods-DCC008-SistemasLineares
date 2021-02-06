@@ -80,7 +80,6 @@ endfunction
 function [BJ, BGS, BSOR] = fatora(a, w)
   
   n = rows(a);
-  printf("Rows: %d\n", n);
   b = a * ones(n,1);
   tol = input('Insira a tolerância: ');
   kmax = input('Insira o n máximo de iterações: ');
@@ -105,7 +104,6 @@ function [BJ, BGS, BSOR] = fatora(a, w)
     BSOR = xSOR;
   else
     BSOR = 0;
-    save metodoSOR.text 0;
   endif
 endfunction
 
