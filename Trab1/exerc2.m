@@ -19,7 +19,7 @@ function [x,er,k] = jacobi(a, b, tol, kmax)
       endfor
       aux(i) = x(i);
       x(i) = (b(i) - soma)/a(i,i);
-      er(k) =  abs(max(x - aux)/max(x));
+      er(k+1) =  abs(max(x - aux)/max(x));
       (norm(x(i),inf) - norm(aux(i),inf))/norm(x(i), inf);
       if(abs(er(k+1)) < tol)
         return;
@@ -53,7 +53,7 @@ function [x,er,k] = sor(a, b, tol, kmax, w)
         somasup = somasup + sup(i,j) * xAnt(j);
       endfor
       x(i) = (1-w)*(xAnt(i)) + (b(i) - somainf - somasup)* w/a(i,i);
-      er(k) =  abs(max(x - xAnt)/max(x));
+      er(k+1) =  abs(max(x - xAnt)/max(x));
       if(abs(er(k+1)) < tol)
         return;
       endif
