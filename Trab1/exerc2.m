@@ -7,9 +7,7 @@ function [x,er,k] = jacobi(a, b, tol, kmax)
   for i = 1:n
     x(i) = b(i)/a(i, i)
   endfor
-  k = 0;
-  while (k < kmax)
-    k = k + 1;
+  for k = 1:kmax
     for i = 1:n
       soma = 0;
       for j = 1:n
@@ -24,7 +22,7 @@ function [x,er,k] = jacobi(a, b, tol, kmax)
         return;
       endif
     endfor
-  endwhile
+  endfor
   return;
 endfunction
 
@@ -35,12 +33,10 @@ function [x,er,k] = sor(a, b, tol, kmax, w)
   for i = 1:n
     x(i) = b(i)/a(i, i);
   endfor
-  k = 0;
   inf = tril(a, -1);
   sup = triu(a, 1);
   
-  while (k < kmax)
-    k = k + 1;
+  for k = 1:kmax
     xAnt = x;
     for i = 1:n
       somainf = 0;
@@ -57,11 +53,9 @@ function [x,er,k] = sor(a, b, tol, kmax, w)
         return;
       endif
     endfor
-  endwhile
+  endfor
   return;
 endfunction
-
-
 
 function dom = diagonal_dominante(a)
   dom = true(1);

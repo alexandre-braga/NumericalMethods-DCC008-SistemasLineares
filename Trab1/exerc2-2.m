@@ -15,7 +15,7 @@ function [x,er,k] = jacobi(a, b, tol, kmax)
       xold(i) = x(i);
       x(i) = (b(i) - sigma)/a(i, i);
     endfor
-    er(k) = abs(max(x - xold));
+    er(k) = abs(max(x - xold)/max(x));
     if (er(k) < tol)
       return;
     endif
