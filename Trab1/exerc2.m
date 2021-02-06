@@ -85,8 +85,7 @@ function [BJ, BGS, BSOR] = fatora(a, w)
   kmax = input('Insira o n máximo de iterações: ');
   
   #d
-  [V lambda] = eig(a);
-  raioEspec = max(abs(diag(lambda)));
+  raioEspec = eigs(a, 1, 'lm');
   printf("Raio espectral: %d\n", raioEspec);
   
   
