@@ -85,10 +85,11 @@ function [BJ, BGS, BSOR] = fatora(a, w)
   kmax = input('Insira o n máximo de iterações: ');
   
   #d
-  raioEspec = eigs(a, 1, 'lm');
+  #[V lambda] = eig(a);
+  #raioEspec = max(abs(diag(lambda)));
+  raioEspec = abs(eigs(a, 1, 'lm'));
   printf("Raio espectral: %d\n", raioEspec);
-  
-  
+
   [xJacobi,erJacobi,kJacobi] = jacobi(a, b, tol, kmax);
   save metodoJacobi.text xJacobi erJacobi kJacobi tol kmax raioEspec;
   BJ = xJacobi;
