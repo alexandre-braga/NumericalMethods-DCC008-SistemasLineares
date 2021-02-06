@@ -38,7 +38,7 @@ function [x,er,k] = sor(a, b, tol, kmax, w)
   
   for k = 1:kmax,
     xAnt = x;
-    for i = 1:n
+    for i = 1:n,
       somainf = 0;
       somasup = 0;
       for j = 1:i,
@@ -105,7 +105,7 @@ function [BJ, BGS, BSOR] = fatora(a, w)
     BSOR = xSOR;
   else
     BSOR = 0;
-    save metodoSOR.text 0;
+    save metodoSOR.text BSOR;
   endif
 endfunction
 
