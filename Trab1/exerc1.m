@@ -44,11 +44,13 @@ function analise(matriz)
   printf("r = %f\n", r);
   
   #j
-  #K = cond(a);
-  #K2 = norm(a, inf) * norm(inv(a), inf);
+  if(n < 10000)
+    K = cond(a);
+    save ultimaMatriz.text x distX distA distB r K b a;
+  else 
+    save ultimaMatriz.text x distX distA distB r b a;
+  endif
   
-  save ultimaMatriz.text x distX distA distB r b a;
-
  endfunction
 
 addpath(pwd);
