@@ -67,7 +67,9 @@ function dom = diagonal_dominante(a)
     somaLinha = 0;
     for j = 1:n
       if(i != j)
-        somaLinha = somaLinha + a(i, j);
+        if(a(i,j) != 0)
+          somaLinha = somaLinha + a(i, j);
+        endif
       endif
     endfor
     if(somaLinha >= a(i, i))
@@ -79,6 +81,16 @@ function dom = diagonal_dominante(a)
   
 endfunction
 
+function dom = diagonal_dominanteCholesky(a)
+  try chol(a)
+    dom = true(1);
+  catch ME
+    dom = false(1);
+  end
+  return
+endfunction
+
+
 function [BJ, BGS, BSOR] = fatora(a, w)
   
   n = rows(a);
@@ -87,14 +99,18 @@ function [BJ, BGS, BSOR] = fatora(a, w)
   kmax = input('Insira o n máximo de iterações: ');
   
   #d
-  raioEspec = abs(eigs(a, 1, 'lm'));
+  if(n >= 10000)
+    [V lambda]=eig(a);
+    raioEspec = max(abs(diag(lambda)));
+  else
+    raioEspec = abs(eigs(a, 1, 'lm'));
+  endif
   printf("Raio espectral: %d\n", raioEspec);
   
   
-  #[xJacobi,erJacobi,erAbJacobi,kJacobi] = jacobi(a, b, tol, kmax);
-  #save metodoJacobi.text erJacobi erAbJacobi kJacobi tol kmax raioEspec xJacobi;
-  #BJ = xJacobi;
-  BJ = 0;
+  [xJacobi,erJacobi,erAbJacobi,kJacobi] = jacobi(a, b, tol, kmax);
+  save metodoJacobi.text erJacobi erAbJacobi kJacobi tol kmax raioEspec xJacobi;
+  BJ = xJacobi;
   
   [xSeidel,erSeidel,erAbSeidel,kSeidel] = sor(a, b, tol, kmax, 1);
   save metodoSeidel.text erSeidel erAbSeidel kSeidel tol kmax raioEspec xSeidel;
@@ -120,7 +136,11 @@ function analise(matriz)
   b = a * ones(n,1);
   
   #c
-  dom = diagonal_dominante(a);
+  if(n >= 10000)
+    dom = diagonal_dominanteCholesky(a);
+  else
+    dom = diagonal_dominante(a);
+  endif
   printf("É diagonal dominante ? %d\n", dom);
   
   #e
