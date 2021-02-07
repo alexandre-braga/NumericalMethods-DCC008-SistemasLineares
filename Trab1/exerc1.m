@@ -46,9 +46,9 @@ function analise(matriz)
   #j
   if(n < 10000)
     K = cond(a);
-    save ultimaMatriz.text x distX distA distB r K b a;
+    save ultimaMatriz.text x distX distA distB r preench K b a;
   else 
-    save ultimaMatriz.text x distX distA distB r b a;
+    save ultimaMatriz.text x distX distA distB r preench b a;
   endif
   
  endfunction

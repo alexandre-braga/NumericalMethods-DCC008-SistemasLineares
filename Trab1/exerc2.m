@@ -132,11 +132,24 @@ function analise(matriz)
   save fatoracoesB.text BJ BGS BSOR;
   
   #e
-  reJacobi = raioEspec(BJ,n);
-  reSeidel = raioEspec(BGS,n);
-  reSOR = raioEspec(BSOR,n);
-  printf("reJacobi: %d\n reSeidel: %d\n reSOR: %d\n", reJacobi, reSeidel, reSOR);
+  if(n <= 10000)
+    reJacobi = raioEspec(BJ,n);
+    reSeidel = raioEspec(BGS,n);
+    reSOR = raioEspec(BSOR,n);
+    printf("reJacobi: %d\n reSeidel: %d\n reSOR: %d\n", reJacobi, reSeidel, reSOR);
+  else
+    if(dom)
+      reJacobi = 0;
+      reSeidel = 0;
+      reSOR = 0;
+     else
+      reJacobi = 2;
+      reSeidel = 2;
+      reSOR = 2;
+      endif
+  endif
   
+ 
   
   if(reJacobi < 1)
     printf("Método Jacobi: \n");
