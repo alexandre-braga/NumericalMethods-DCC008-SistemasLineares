@@ -92,28 +92,18 @@ endfunction
 
 
 function [BJ, BGS, BSOR] = fatora(a, w)
-  
-  n = rows(a);
-  b = a * ones(n,1);
-  [L,U,P] = lu(a);
+  L = tril(a,-1);
+  U = triu(a, 1);
   D = diag(diag(a));
-
   BJ  = inv(D) * (-L -U);
-
   BGS = inv(L + D)*(-U);
-  
   BSOR = inv(L + (1/w)*D )*( (1/w)*D -D -U);
-  
   return;
 endfunction
 
 function lambdaB = raioEspec(B,n)
-  if(n >= 10000)
-    [V lambda] = eig(B);
-    lambdaB = max(abs(diag(lambda)));
-  else
-    lambdaB = abs(eigs(B, 1, 'lm'));
-  endif
+  [V lambda] = eig(B);
+  lambdaB = max(abs(diag(lambda)));
   return;
 endfunction  
 
@@ -135,23 +125,23 @@ function analise(matriz)
   endif
   printf("É diagonal dominante ? %d\n", dom);
   
-  #e
-  tol = input('Insira a tolerância: ');
-  kmax = input('Insira o n máximo de iterações: ');
-  w = input('Insira o parâmetro de relaxação W: ');
-  
   #d
+  
+  w = input('Insira o parâmetro de relaxação W: ');
   [BJ,BGS,BSOR] = fatora(a, w);
   save fatoracoesB.text BJ BGS BSOR;
   
   #e
   reJacobi = raioEspec(BJ,n);
-  reSOR = raioEspec(BGS,n);
-  reSeidel = raioEspec(BSOR,n);
+  reSeidel = raioEspec(BGS,n);
+  reSOR = raioEspec(BSOR,n);
   printf("reJacobi: %d\n reSeidel: %d\n reSOR: %d\n", reJacobi, reSeidel, reSOR);
   
   
   if(reJacobi < 1)
+    printf("Método Jacobi: \n");
+    tol = input('Insira a tolerância: ');
+    kmax = input('Insira o n máximo de iterações: ');
     [xJacobi,erJacobi,erAbJacobi,kJacobi] = jacobi(a, b, tol, kmax);
     save metodoJacobi.text erJacobi erAbJacobi kJacobi tol kmax reJacobi xJacobi;
   else
@@ -159,6 +149,9 @@ function analise(matriz)
   endif
   
   if(reSeidel < 1)
+    printf("Método Seidel: \n");
+    tol = input('Insira a tolerância: ');
+    kmax = input('Insira o n máximo de iterações: ');
     [xSeidel,erSeidel,erAbSeidel,kSeidel] = sor(a, b, tol, kmax, 1);
     save metodoSeidel.text erSeidel erAbSeidel kSeidel tol kmax reSeidel xSeidel;
   else
@@ -166,6 +159,9 @@ function analise(matriz)
   endif
   
   if(reSOR < 1)
+    printf("Método SOR: \n");
+    tol = input('Insira a tolerância: ');
+    kmax = input('Insira o n máximo de iterações: ');
     [xSOR,erSOR,erAbSOR,kSOR] = sor(a, b, tol, kmax, w);
     save metodoSOR.text erSOR erAbSOR kSOR tol kmax w reSOR xSOR;
   else
