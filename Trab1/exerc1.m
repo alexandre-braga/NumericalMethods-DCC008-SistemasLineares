@@ -30,12 +30,12 @@ function analise(matriz)
   printf("distX = %f\n", distX);
   
   #g
-  difA = a - (P * L * U);
+  difA = a - (inv(P) * L * U);
   distA = norm(difA, inf) / norm(a, inf);
   printf("distA = %f\n", distA);
   
   #h
-  difB = b - ((P * L * U) * x);
+  difB = b - ((inv(P) * L * U) * x);
   distB = norm(difB, inf) / norm(b, inf);
   printf("distB = %f\n", distB);
   

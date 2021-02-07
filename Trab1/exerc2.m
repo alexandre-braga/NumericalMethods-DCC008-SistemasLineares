@@ -91,9 +91,10 @@ function [BJ, BGS, BSOR] = fatora(a, w)
   printf("Raio espectral: %d\n", raioEspec);
   
   
-  [xJacobi,erJacobi,erAbJacobi,kJacobi] = jacobi(a, b, tol, kmax);
-  save metodoJacobi.text erJacobi erAbJacobi kJacobi tol kmax raioEspec xJacobi;
-  BJ = xJacobi;
+  #[xJacobi,erJacobi,erAbJacobi,kJacobi] = jacobi(a, b, tol, kmax);
+  #save metodoJacobi.text erJacobi erAbJacobi kJacobi tol kmax raioEspec xJacobi;
+  #BJ = xJacobi;
+  BJ = 0;
   
   [xSeidel,erSeidel,erAbSeidel,kSeidel] = sor(a, b, tol, kmax, 1);
   save metodoSeidel.text erSeidel erAbSeidel kSeidel tol kmax raioEspec xSeidel;
