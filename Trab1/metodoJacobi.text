@@ -1,12 +1,10 @@
-# Created by Octave 5.2.0, Sun Feb 07 19:00:53 2021 -03 <kuroneko@kuroneko-VirtualBox>
-# name: erSOR
-# type: matrix
-# rows: 1
-# columns: 2
- 0.010000000114264718 2.4741395831427524e-07
+# Created by Octave 5.2.0, Sun Feb 07 20:01:10 2021 -03 <kuroneko@kuroneko-VirtualBox>
+# name: erJacobi
+# type: scalar
+4.9861899187230515e-10
 
 
-# name: kSOR
+# name: kJacobi
 # type: scalar
 1
 
@@ -18,25 +16,20 @@
 
 # name: kmax
 # type: scalar
-50
+20
 
 
-# name: w
+# name: reJacobi
 # type: scalar
-1.7
+0.9999746701965726
 
 
-# name: reSOR
-# type: scalar
-0.99971285427557155
-
-
-# name: xSOR
+# name: xJacobi
 # type: matrix
 # rows: 494
 # columns: 1
- 0.989999999038083
- 2.4741395831427524e-07
+ 0.98999999869254007
+ 0
  -7.3687297646558733e-08
  1.4553762253780895e-07
  0

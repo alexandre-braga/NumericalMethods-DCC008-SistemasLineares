@@ -48,11 +48,11 @@ function [x,er,k] = sor(a, b, tol, kmax, w)
         somasup = somasup + sup(i,j) * xAnt(j);
       endfor
       x(i) = (1-w) * xAnt(i) + w * (b(i) - somainf - somasup)/a(i,i);
-      er(i) = abs(x(i) - xAnt(i)/x(i));
-      if(abs(er(i)) < tol)
-        return;
-      endif
     endfor
+    er(k) = max(x - xAnt)/max(x);
+    if(abs(er(k)) < tol)
+      return;
+    endif
   endfor
   return;
 endfunction
@@ -135,6 +135,7 @@ function analise(matriz)
     reSeidel = raioEspec(BGS,n);
     reSOR = raioEspec(BSOR,n);
     printf("reJacobi: %d\n reSeidel: %d\n reSOR: %d\n", reJacobi, reSeidel, reSOR);
+    save raiosEspecW w reJacobi reSeidel reSOR;
   else
     if(dom)
       reJacobi = 0;
