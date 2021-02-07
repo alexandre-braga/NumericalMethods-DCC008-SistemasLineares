@@ -95,35 +95,27 @@ function [BJ, BGS, BSOR] = fatora(a, w)
   
   n = rows(a);
   b = a * ones(n,1);
-  tol = input('Insira a tolerância: ');
-  kmax = input('Insira o n máximo de iterações: ');
+  [L,U,P] = lu(a);
+  D = diag(diag(a));
+
+  BJ  = inv(D) * (-L -U);
+
+  BGS = inv(L + D)*(-U);
   
-  #d
-  if(n >= 10000)
-    [V lambda]=eig(a);
-    raioEspec = max(abs(diag(lambda)));
-  else
-    raioEspec = abs(eigs(a, 1, 'lm'));
-  endif
-  printf("Raio espectral: %d\n", raioEspec);
+  BSOR = inv(L + (1/w)*D )*( (1/w)*D -D -U);
   
-  
-  [xJacobi,erJacobi,erAbJacobi,kJacobi] = jacobi(a, b, tol, kmax);
-  save metodoJacobi.text erJacobi erAbJacobi kJacobi tol kmax raioEspec xJacobi;
-  BJ = xJacobi;
-  
-  [xSeidel,erSeidel,erAbSeidel,kSeidel] = sor(a, b, tol, kmax, 1);
-  save metodoSeidel.text erSeidel erAbSeidel kSeidel tol kmax raioEspec xSeidel;
-  BGS = xSeidel;
-  
-  if(raioEspec < 1)
-    [xSOR,erSOR,erAbSOR,kSOR] = sor(a, b, tol, kmax, w);
-    save metodoSOR.text erSOR erAbSOR kSOR tol kmax w raioEspec xSOR;
-    BSOR = xSOR;
-  else
-    BSOR = 0;
-  endif
+  return;
 endfunction
+
+function lambdaB = raioEspec(B,n)
+  if(n >= 10000)
+    [V lambda] = eig(B);
+    lambdaB = max(abs(diag(lambda)));
+  else
+    lambdaB = abs(eigs(B, 1, 'lm'));
+  endif
+  return;
+endfunction  
 
 function analise(matriz)
   
@@ -144,9 +136,45 @@ function analise(matriz)
   printf("É diagonal dominante ? %d\n", dom);
   
   #e
+  tol = input('Insira a tolerância: ');
+  kmax = input('Insira o n máximo de iterações: ');
   w = input('Insira o parâmetro de relaxação W: ');
-  [jacobiMat,seidelMat,sorMat] = fatora(a, w);
-  save metodosIterativos.text jacobiMat seidelMat sorMat; 
+  
+  #d
+  [BJ,BGS,BSOR] = fatora(a, w);
+  save fatoracoesB.text BJ BGS BSOR;
+  
+  #e
+  reJacobi = raioEspec(BJ,n);
+  reSOR = raioEspec(BGS,n);
+  reSeidel = raioEspec(BSOR,n);
+  printf("reJacobi: %d\n reSeidel: %d\n reSOR: %d\n", reJacobi, reSeidel, reSOR);
+  
+  
+  if(reJacobi < 1)
+    [xJacobi,erJacobi,erAbJacobi,kJacobi] = jacobi(a, b, tol, kmax);
+    save metodoJacobi.text erJacobi erAbJacobi kJacobi tol kmax reJacobi xJacobi;
+  else
+    XJacobi = 0;
+  endif
+  
+  if(reSeidel < 1)
+    [xSeidel,erSeidel,erAbSeidel,kSeidel] = sor(a, b, tol, kmax, 1);
+    save metodoSeidel.text erSeidel erAbSeidel kSeidel tol kmax reSeidel xSeidel;
+  else
+    XSeidel = 0;
+  endif
+  
+  if(reSOR < 1)
+    [xSOR,erSOR,erAbSOR,kSOR] = sor(a, b, tol, kmax, w);
+    save metodoSOR.text erSOR erAbSOR kSOR tol kmax w reSOR xSOR;
+  else
+    xSOR = 0;
+  endif
+  
+  save metodosIterativos.text xJacobi xSeidel xSOR; 
+  
+  
   
 endfunction
 

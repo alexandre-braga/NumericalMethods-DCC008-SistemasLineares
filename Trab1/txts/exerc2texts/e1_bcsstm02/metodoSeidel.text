@@ -1,4 +1,4 @@
-# Created by Octave 5.2.0, Sat Feb 06 18:57:31 2021 -03 <kuroneko@kuroneko-VirtualBox>
+# Created by Octave 5.2.0, Sun Feb 07 15:59:09 2021 -03 <kuroneko@kuroneko-VirtualBox>
 # name: erSeidel
 # type: scalar
 0
@@ -16,17 +16,17 @@
 
 # name: tol
 # type: scalar
-9.9999999999999998e-20
+0.0001
 
 
 # name: kmax
 # type: scalar
-100
+50
 
 
-# name: raioEspec
+# name: reSeidel
 # type: scalar
-0.17282857345500011
+0.23862246966890713
 
 
 # name: xSeidel

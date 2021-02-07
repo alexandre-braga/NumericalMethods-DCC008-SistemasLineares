@@ -1,4 +1,4 @@
-# Created by Octave 5.2.0, Sat Feb 06 18:57:31 2021 -03 <kuroneko@kuroneko-VirtualBox>
+# Created by Octave 5.2.0, Sun Feb 07 15:59:09 2021 -03 <kuroneko@kuroneko-VirtualBox>
 # name: erSOR
 # type: scalar
 0
@@ -16,22 +16,22 @@
 
 # name: tol
 # type: scalar
-9.9999999999999998e-20
+0.0001
 
 
 # name: kmax
 # type: scalar
-100
+50
 
 
 # name: w
 # type: scalar
-0.5
+2
 
 
-# name: raioEspec
+# name: reSOR
 # type: scalar
-0.17282857345500011
+0.14736047310466666
 
 
 # name: xSOR
