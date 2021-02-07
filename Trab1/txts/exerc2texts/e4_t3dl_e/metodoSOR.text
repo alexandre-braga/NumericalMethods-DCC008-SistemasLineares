@@ -1,15 +1,15 @@
-# Created by Octave 5.2.0, Sun Feb 07 00:40:07 2021 -03 <kuroneko@kuroneko-VirtualBox>
-# name: erJacobi
+# Created by Octave 5.2.0, Sun Feb 07 00:40:08 2021 -03 <kuroneko@kuroneko-VirtualBox>
+# name: erSOR
 # type: scalar
-0
+4.4408920985006262e-16
 
 
-# name: erAbJacobi
+# name: erAbSOR
 # type: scalar
-0
+-2.2204460492503131e-16
 
 
-# name: kJacobi
+# name: kSOR
 # type: scalar
 1
 
@@ -24,16 +24,21 @@
 100
 
 
+# name: w
+# type: scalar
+1.5
+
+
 # name: raioEspec
 # type: scalar
 0
 
 
-# name: xJacobi
+# name: xSOR
 # type: matrix
 # rows: 20360
 # columns: 1
- 1
+ 0.99999999999999978
  1
  1
  1

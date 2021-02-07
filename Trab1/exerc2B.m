@@ -119,9 +119,6 @@ function [BJ, BGS, BSOR] = fatora(a, w)
   save metodoSOR.text erSOR erAbSOR kSOR tol kmax w raioEspec xSOR;
   BSOR = xSOR;
   
-  else
-    BSOR = 0;
-  endif
 endfunction
 
 function analise(matriz)
