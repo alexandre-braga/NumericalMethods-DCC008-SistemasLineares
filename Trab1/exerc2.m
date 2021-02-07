@@ -1,6 +1,6 @@
 #!/home/kuroneko/snap/octave -qf
 1;
-function [x,er,erAb,k] = jacobi(a, b, tol, kmax)
+function [x,er,k] = jacobi(a, b, tol, kmax)
   n = rows(a);
   x = zeros(n,1);
   aux = zeros(n,1);
@@ -17,7 +17,6 @@ function [x,er,erAb,k] = jacobi(a, b, tol, kmax)
       endfor
       aux(i) = x(i);
       x(i) = (b(i) - soma)/a(i,i);
-      erAb(i) =  x(i) - ones(1,1);
       er(i)  = (norm(x, inf) - norm(aux, inf))/norm(x, inf);
       if(abs(er(i)) < tol)
         return;
@@ -27,7 +26,7 @@ function [x,er,erAb,k] = jacobi(a, b, tol, kmax)
   return;
 endfunction
 
-function [x,er,erAb,k] = sor(a, b, tol, kmax, w)
+function [x,er,k] = sor(a, b, tol, kmax, w)
   n = rows(a);
   x = zeros(n,1);
   xAnt = zeros(n,1);
@@ -49,7 +48,6 @@ function [x,er,erAb,k] = sor(a, b, tol, kmax, w)
         somasup = somasup + sup(i,j) * xAnt(j);
       endfor
       x(i) = (1-w) * xAnt(i) + w * (b(i) - somainf - somasup)/a(i,i);
-      erAb(i) =  x(i) - ones(1,1);
       er(i) = abs(x(i) - xAnt(i)/x(i));
       if(abs(er(i)) < tol)
         return;
@@ -155,8 +153,8 @@ function analise(matriz)
     printf("Método Jacobi: \n");
     tol = input('Insira a tolerância: ');
     kmax = input('Insira o n máximo de iterações: ');
-    [xJacobi,erJacobi,erAbJacobi,kJacobi] = jacobi(a, b, tol, kmax);
-    save metodoJacobi.text erJacobi erAbJacobi kJacobi tol kmax reJacobi xJacobi;
+    [xJacobi,erJacobi,kJacobi] = jacobi(a, b, tol, kmax);
+    save metodoJacobi.text erJacobi kJacobi tol kmax reJacobi xJacobi;
   else
     XJacobi = 0;
   endif
@@ -165,8 +163,8 @@ function analise(matriz)
     printf("Método Seidel: \n");
     tol = input('Insira a tolerância: ');
     kmax = input('Insira o n máximo de iterações: ');
-    [xSeidel,erSeidel,erAbSeidel,kSeidel] = sor(a, b, tol, kmax, 1);
-    save metodoSeidel.text erSeidel erAbSeidel kSeidel tol kmax reSeidel xSeidel;
+    [xSeidel,erSeidel,kSeidel] = sor(a, b, tol, kmax, 1);
+    save metodoSeidel.text erSeidel kSeidel tol kmax reSeidel xSeidel;
   else
     XSeidel = 0;
   endif
@@ -175,8 +173,8 @@ function analise(matriz)
     printf("Método SOR: \n");
     tol = input('Insira a tolerância: ');
     kmax = input('Insira o n máximo de iterações: ');
-    [xSOR,erSOR,erAbSOR,kSOR] = sor(a, b, tol, kmax, w);
-    save metodoSOR.text erSOR erAbSOR kSOR tol kmax w reSOR xSOR;
+    [xSOR,erSOR,kSOR] = sor(a, b, tol, kmax, w);
+    save metodoSOR.text erSOR kSOR tol kmax w reSOR xSOR;
   else
     xSOR = 0;
   endif
