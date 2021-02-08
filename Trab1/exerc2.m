@@ -183,24 +183,22 @@ function analise(matriz)
   save metodosIterativos.text xJacobi xSeidel xSOR; 
   
   #f
-  kj = 1:1:erJacobi;
+  kj = 1:1:kJacobi;
   plot(kj,log(erJacobi));
   hold on;
   
-  kgs = 0:1:kSeidel;
-  egs = 0:0.0001:erSeidel;
-  logegs = log(egs);
-  plot(logegs,kgs);
+  kgs = 1:1:kSeidel;
+  plot(kgs,log(erSeidel));
   hold on;
   
-  ks = 0:1:kSOR;
-  es = 0:0.0001:erSOR;
-  loges = log(es);
-  plor(loges,ks);
-  xlabel("log(er)");
-  ylabel("k");
+  ks = 1:1:kSOR;
+  plot(ks,log(erSOR));
+  
+  ylabel("log(er)");
+  xlabel("k");
   title("Gráfico k x log(er)");
   
+  endif
 endfunction
 
 addpath(pwd);

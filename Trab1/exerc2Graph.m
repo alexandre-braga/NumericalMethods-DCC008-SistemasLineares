@@ -17,14 +17,15 @@ function [x,er,k] = jacobi(a, b, tol, kmax)
       endfor
       aux(i) = x(i);
       x(i) = (b(i) - soma)/a(i,i);
-      er(i)  = (norm(x, inf) - norm(aux, inf))/norm(x, inf);
-      if(abs(er(i)) < tol)
-        return;
-      endif
     endfor
+    er(k)  = (norm(x, inf) - norm(aux, inf))/norm(x, inf);
+    if(abs(er(k)) < tol)
+      return;
+    endif
   endfor
   return;
 endfunction
+
 
 function [x,er,k] = sor(a, b, tol, kmax, w)
   n = rows(a);
