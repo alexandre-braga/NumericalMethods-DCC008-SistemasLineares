@@ -4,7 +4,7 @@ function analise(matriz)
   
   #a
   load("-mat",matriz);
-  a = Problem.A
+  a = Problem.A;
   n = rows(a);
   
   #b
@@ -17,7 +17,7 @@ function analise(matriz)
   #spy(U);
   
   #d
-  preench = 100 - nnz(a)/(nnz(L)+nnz(U)) * 100
+  preench = 100 - nnz(a)/(nnz(L)+nnz(U)) * 100;
   printf("preench = %f\n", preench);
   
   #e

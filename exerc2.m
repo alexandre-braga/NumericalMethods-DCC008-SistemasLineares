@@ -38,7 +38,7 @@ function [x,er,k] = sor(a, b, tol, kmax, w)
   
   for k = 1:kmax,
     xAnt = x;
-    for i = 1:n
+    for i = 1:n,
       somainf = 0;
       somasup = 0;
       for j = 1:i,
@@ -61,9 +61,9 @@ function dom = diagonal_dominante(a)
   dom = true(1);
   n = rows(a);
   
-  for i = 1:n
+  for i = 1:n,
     somaLinha = 0;
-    for j = 1:n
+    for j = 1:n,
       if(i != j)
         if(a(i,j) != 0)
           somaLinha = somaLinha + a(i, j);
@@ -87,7 +87,6 @@ function dom = diagonal_dominanteCholesky(a)
   end
   return
 endfunction
-
 
 function [BJ, BGS, BSOR] = fatora(a, w)
   L = tril(a,-1);
@@ -137,18 +136,18 @@ function analise(matriz)
     printf("reJacobi: %d\n reSeidel: %d\n reSOR: %d\n", reJacobi, reSeidel, reSOR);
     save raiosEspecW w reJacobi reSeidel reSOR;
   else
+    #inicialiar raioEspec com valores simbolicos
+    #para matrizes muito grandes
     if(dom)
-      reJacobi = 0;
-      reSeidel = 0;
-      reSOR = 0;
+      reJacobi = -1;
+      reSeidel = -1;
+      reSOR = -1;
      else
-      reJacobi = 2;
-      reSeidel = 2;
-      reSOR = 2;
-      endif
+      reJacobi = inf;
+      reSeidel = inf;
+      reSOR = inf;
+    endif
   endif
-  
- 
   
   if(reJacobi < 1)
     printf("Método Jacobi: \n");
