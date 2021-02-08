@@ -17,11 +17,11 @@ function [x,er,k] = jacobi(a, b, tol, kmax)
       endfor
       aux(i) = x(i);
       x(i) = (b(i) - soma)/a(i,i);
+      er(i)  = (norm(x, inf) - norm(aux, inf))/norm(x, inf);
+      if(abs(er(i)) < tol)
+        return;
+      endif
     endfor
-    er(k)  = (norm(x, inf) - norm(aux, inf))/norm(x, inf);
-    if(abs(er(k)) < tol)
-      return;
-    endif
   endfor
   return;
 endfunction
@@ -135,7 +135,6 @@ function analise(matriz)
     reSeidel = raioEspec(BGS,n);
     reSOR = raioEspec(BSOR,n);
     printf("reJacobi: %d\n reSeidel: %d\n reSOR: %d\n", reJacobi, reSeidel, reSOR);
-    save raiosEspecW w reJacobi reSeidel reSOR;
   else
     if(dom)
       reJacobi = 0;
@@ -155,8 +154,7 @@ function analise(matriz)
     tol = input('Insira a tolerância: ');
     kmax = input('Insira o n máximo de iterações: ');
     [xJacobi,erJacobi,kJacobi] = jacobi(a, b, tol, kmax);
-    save metodoJacobi.text erJacobi kJacobi tol kmax reJacobi xJacobi;
-  else
+   else
     XJacobi = 0;
   endif
   
@@ -165,7 +163,6 @@ function analise(matriz)
     tol = input('Insira a tolerância: ');
     kmax = input('Insira o n máximo de iterações: ');
     [xSeidel,erSeidel,kSeidel] = sor(a, b, tol, kmax, 1);
-    save metodoSeidel.text erSeidel kSeidel tol kmax reSeidel xSeidel;
   else
     XSeidel = 0;
   endif
@@ -175,31 +172,11 @@ function analise(matriz)
     tol = input('Insira a tolerância: ');
     kmax = input('Insira o n máximo de iterações: ');
     [xSOR,erSOR,kSOR] = sor(a, b, tol, kmax, w);
-    save metodoSOR.text erSOR kSOR tol kmax w reSOR xSOR;
   else
     xSOR = 0;
   endif
   
-  save metodosIterativos.text xJacobi xSeidel xSOR; 
-  
-  #f
-  kj = 1:1:erJacobi;
-  plot(kj,log(erJacobi));
-  hold on;
-  
-  kgs = 0:1:kSeidel;
-  egs = 0:0.0001:erSeidel;
-  logegs = log(egs);
-  plot(logegs,kgs);
-  hold on;
-  
-  ks = 0:1:kSOR;
-  es = 0:0.0001:erSOR;
-  loges = log(es);
-  plor(loges,ks);
-  xlabel("log(er)");
-  ylabel("k");
-  title("Gráfico k x log(er)");
+  save baseGrafico erJacobi kJacobi erSeidel kSeidel erSOR kSOR; 
   
 endfunction
 
